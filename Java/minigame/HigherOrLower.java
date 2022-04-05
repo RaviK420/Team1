@@ -77,7 +77,7 @@ public class HigherOrLower extends JFrame{
             System.out.println("This is not working");
         } 
         try{
-        TimeUnit.SECONDS.sleep(5);}
+        TimeUnit.SECONDS.sleep(3);}
             catch(Exception z){System.out.println(z);}
         f.dispose();    
         return(winner);
