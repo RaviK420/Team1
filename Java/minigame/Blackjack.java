@@ -13,6 +13,8 @@ public class Blackjack extends JFrame{
     static JFrame f;
     static JLabel pic2;
     static String hiddenCard;
+    static boolean clicked = false;
+    static boolean hidden;
     public static boolean game(){
         String[][] number = {{"2","3","4","5","6","7","8","9","10","king","queen","ace"},{"2","3","4","5","6","7","8","9","10","king","queen","ace"},{"2","3","4","5","6","7","8","9","10","king","queen","ace"},{"2","3","4","5","6","7","8","9","10","king","queen","ace"}};
         String []Nsuits = {"clubs","diamonds","hearts","spades"};
@@ -37,7 +39,6 @@ public class Blackjack extends JFrame{
         hiddenCard = "Java/minigame/Cards/"+number[suit][Nnumber]+"_of_"+Nsuits[suit]+".png";
         if(number[suit][Nnumber]=="king"||number[suit][Nnumber]=="queen"||number[suit][Nnumber]=="ace"){
             Nopp +=10;
-            hiddenCard =number[suit][Nnumber];
         }
         else{
             Nopp+= Integer.parseInt(number[suit][Nnumber]);
@@ -104,12 +105,15 @@ public class Blackjack extends JFrame{
                 f.revalidate();
                 f.repaint();
                 try{
+                System.out.println(hiddenCard);
                 BufferedImage img = ImageIO.read(new File(hiddenCard));
                 Image dimg = img.getScaledInstance(Label1.getWidth(), Label1.getHeight(), Image.SCALE_SMOOTH);
                 ImageIcon imgaeIcone = new ImageIcon(dimg);
                 JLabel HiddenCard =new JLabel(imgaeIcone);
                 HiddenCard.setBounds(230,75,100,200);
                 f.add(HiddenCard);
+                hidden = false;
+                clicked = true;
                 }
                 catch(IOException z){
                     ((Throwable) z).printStackTrace();
@@ -123,6 +127,14 @@ public class Blackjack extends JFrame{
 
         //f.getContentPane().setBackground(Color.Darkgreen);
         f.setVisible(true);//making the frame visible 
+        while(clicked == false){
+            System.out.println("_");
+        }
+        try{
+            TimeUnit.SECONDS.sleep(3);}
+                catch(Exception z){System.out.println(z);} 
+        System.out.println("This has now worked");
+        f.dispose();
         return(true);
     }
 }
