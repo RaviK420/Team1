@@ -18,12 +18,16 @@ public class Blackjack extends JFrame{
         f.add(hit);
         stand.setBounds(230,100,100, 40);
         f.add(stand);
-        JLabel Label1 = new JLabel("Hello");
+        JLabel Label1 = new JLabel();
         Label1.setBounds(130,200,100,200);
         try {
-            BufferedImage img = ImageIO.read(new File("Java/minigame/back.jpg"));
-            JLabel pic = new JLabel(new ImageIcon(img));
-            pic.setBounds(130,200,100,200);
+            BufferedImage img = ImageIO.read(new File("Java/minigame/Cards/2_of_clubs.png"));
+            Image dimg = img.getScaledInstance(Label1.getWidth(), Label1.getHeight(), Image.SCALE_SMOOTH);
+            ImageIcon imgaeIcone = new ImageIcon(dimg);
+            JLabel pic = new JLabel(imgaeIcone);
+            JLabel pic2 = new JLabel(new ImageIcon(img));
+            pic.setBounds(130,200,200,400);
+            pic2.setBounds(230,200,100,200);
             f.add(pic);
         } catch (IOException e) {
             System.out.print("not working");
@@ -31,7 +35,8 @@ public class Blackjack extends JFrame{
             e.printStackTrace();
         }
         f.setSize(400,500);//400 width and 500 height  
-        f.setLayout(null);//using no layout managers  
+        f.setLayout(null);//using no layout managers 
+        //f.getContentPane().setBackground(Color.Darkgreen);
         f.setVisible(true);//making the frame visible 
         return(true);
     }
