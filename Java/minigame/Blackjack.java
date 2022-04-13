@@ -11,12 +11,18 @@ import java.util.Random;
 public class Blackjack extends JFrame{
     static JFrame f;
     public static boolean game(){
-        String[][] number = {{"2","3","4","5","6","7","8","9","10","king","queen","ace"},{"2","3","4","5","6","7","8","9","10","king","queen","ace "},{"2","3","4","5","6","7","8","9","10","king","queen","ace "},{"2","3","4","5","6","7","8","9","10","king","queen","ace "}};
+        String[][] number = {{"2","3","4","5","6","7","8","9","10","king","queen","ace"},{"2","3","4","5","6","7","8","9","10","king","queen","ace"},{"2","3","4","5","6","7","8","9","10","king","queen","ace"},{"2","3","4","5","6","7","8","9","10","king","queen","ace"}};
         String []Nsuits = {"clubs","diamonds","hearts","spades"};
         Random rand = new Random();
         int suit = rand.nextInt(4);
         int Nnumber = rand.nextInt(12);
         String path = "Java/minigame/Cards/"+number[suit][Nnumber]+"_of_"+Nsuits[suit]+".png";
+        number [suit][Nnumber] = "0";
+        suit = rand.nextInt(4);
+        Nnumber = rand.nextInt(12);
+        while(number[suit][Nnumber] == "0"){
+            Nnumber = rand.nextInt(12);
+        }
         f=new JFrame("Blackjack");
         JButton hit=new JButton("Hit");
         JButton stand=new JButton("Stand");
@@ -29,14 +35,38 @@ public class Blackjack extends JFrame{
         try {
             BufferedImage img = ImageIO.read(new File(path));
             BufferedImage img2 = ImageIO.read(new File("Java/minigame/Cards/back.jpg"));
+            BufferedImage img3 = ImageIO.read(new File("Java/minigame/Cards/"+number[suit][Nnumber]+"_of_"+Nsuits[suit]+".png"));
+
+            number [suit][Nnumber] = "0";
+            suit = rand.nextInt(4);
+            Nnumber = rand.nextInt(12);
+            while(number[suit][Nnumber] == "0"){
+                Nnumber = rand.nextInt(12);
+            }
+            BufferedImage img4 = ImageIO.read(new File("Java/minigame/Cards/"+number[suit][Nnumber]+"_of_"+Nsuits[suit]+".png"));
+
             Image dimg = img.getScaledInstance(Label1.getWidth(), Label1.getHeight(), Image.SCALE_SMOOTH);
             ImageIcon imgaeIcone = new ImageIcon(dimg);
+
             JLabel pic = new JLabel(imgaeIcone);
             JLabel pic2 = new JLabel(new ImageIcon(img2));
+
+            dimg = img3.getScaledInstance(Label1.getWidth(), Label1.getHeight(), Image.SCALE_SMOOTH);
+            JLabel pic3 = new JLabel(new ImageIcon(dimg));
+
+            dimg = img4.getScaledInstance(Label1.getWidth(), Label1.getHeight(), Image.SCALE_SMOOTH);
+            JLabel pic4 = new JLabel(new ImageIcon(dimg));
+
             pic.setBounds(130,75,100,200);
             pic2.setBounds(230,75,100,200);
+            pic3.setBounds(130,350,100,200);
+            pic4.setBounds(230,350,100,200);
+
             f.add(pic);
             f.add(pic2);
+            f.add(pic3);
+            f.add(pic4);
+
         } catch (IOException e) {
             System.out.print("not working");
             // TODO Auto-generated catch block
@@ -44,6 +74,7 @@ public class Blackjack extends JFrame{
         }
         f.setSize(600,700);//400 width and 500 height  
         f.setLayout(null);//using no layout managers 
+
         //f.getContentPane().setBackground(Color.Darkgreen);
         f.setVisible(true);//making the frame visible 
         return(true);
