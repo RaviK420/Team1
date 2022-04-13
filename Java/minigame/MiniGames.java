@@ -5,4 +5,3 @@ public class MiniGames {
       System.out.println("This has now worked");
     }
   }
-  

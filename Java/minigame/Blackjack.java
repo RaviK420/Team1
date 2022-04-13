@@ -15,12 +15,16 @@ public class Blackjack extends JFrame{
     static String hiddenCard;
     static boolean clicked = false;
     static boolean hidden;
+    static int Uscore;
+    static int UserX;
+    static int suit;
+    static int Nnumber;
     public static boolean game(){
         String[][] number = {{"2","3","4","5","6","7","8","9","10","king","queen","ace"},{"2","3","4","5","6","7","8","9","10","king","queen","ace"},{"2","3","4","5","6","7","8","9","10","king","queen","ace"},{"2","3","4","5","6","7","8","9","10","king","queen","ace"}};
         String []Nsuits = {"clubs","diamonds","hearts","spades"};
         Random rand = new Random();
-        int suit = rand.nextInt(4);
-        int Nnumber = rand.nextInt(12);
+        suit = rand.nextInt(4);
+        Nnumber = rand.nextInt(12);
         String path = "Java/minigame/Cards/"+number[suit][Nnumber]+"_of_"+Nsuits[suit]+".png";
         String opp = number[suit][Nnumber];
         int Nopp;
@@ -63,15 +67,31 @@ public class Blackjack extends JFrame{
             BufferedImage img = ImageIO.read(new File(path));
             BufferedImage img2 = ImageIO.read(new File("Java/minigame/Cards/back.jpg"));
             BufferedImage img3 = ImageIO.read(new File("Java/minigame/Cards/"+number[suit][Nnumber]+"_of_"+Nsuits[suit]+".png"));
-
+            if(number[suit][Nnumber]=="king"||number[suit][Nnumber]=="queen"||number[suit][Nnumber]=="ace"){
+                Uscore =10;
+            }
+            else{
+                Nopp = Integer.parseInt(number[suit][Nnumber]);
+            }
             number [suit][Nnumber] = "0";
             suit = rand.nextInt(4);
             Nnumber = rand.nextInt(12);
             while(number[suit][Nnumber] == "0"){
                 Nnumber = rand.nextInt(12);
             }
+            if(number[suit][Nnumber]=="king"||number[suit][Nnumber]=="queen"||number[suit][Nnumber]=="ace"){
+                Nopp +=10;
+            }
+            else{
+                Nopp+= Integer.parseInt(number[suit][Nnumber]);
+            }
             BufferedImage img4 = ImageIO.read(new File("Java/minigame/Cards/"+number[suit][Nnumber]+"_of_"+Nsuits[suit]+".png"));
-
+            number [suit][Nnumber] = "0";
+            suit = rand.nextInt(4);
+            Nnumber = rand.nextInt(12);
+            while(number[suit][Nnumber] == "0"){
+                Nnumber = rand.nextInt(12);
+            }
             Image dimg = img.getScaledInstance(Label1.getWidth(), Label1.getHeight(), Image.SCALE_SMOOTH);
             ImageIcon imgaeIcone = new ImageIcon(dimg);
 
@@ -88,7 +108,7 @@ public class Blackjack extends JFrame{
             pic2.setBounds(230,75,100,200);
             pic3.setBounds(130,350,100,200);
             pic4.setBounds(230,350,100,200);
-
+            UserX = 330;
             f.add(pic);
             f.add(pic2);
             f.add(pic3);
@@ -122,7 +142,27 @@ public class Blackjack extends JFrame{
             }
         });
 
-        f.setSize(600,700);//400 width and 500 height  
+        hit.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+            try {
+                f.repaint();
+                BufferedImage img3 = ImageIO.read(new File("Java/minigame/Cards/"+number[suit][Nnumber]+"_of_"+Nsuits[suit]+".png"));
+                Image dimg = img3.getScaledInstance(Label1.getWidth(), Label1.getHeight(), Image.SCALE_SMOOTH);
+                ImageIcon imgaeIcone = new ImageIcon(dimg);
+    
+                JLabel pic = new JLabel(imgaeIcone);
+                pic.setBounds(UserX,350,100,200);
+                f.add(pic);
+                UserX+=100;
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            }
+        });
+
+
+        f.setSize(800,900);//400 width and 500 height  
         f.setLayout(null);//using no layout managers 
 
         //f.getContentPane().setBackground(Color.Darkgreen);
