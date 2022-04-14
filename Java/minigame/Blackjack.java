@@ -19,7 +19,13 @@ public class Blackjack extends JFrame{
     static int UserX;
     static int suit;
     static int Nnumber;
+    static int Nopp;
+    static boolean winner;
+    static int aceCounter;
+    static int UaceCounter;
     public static boolean game(){
+        aceCounter = 0;
+        UaceCounter = 0;
         String[][] number = {{"2","3","4","5","6","7","8","9","10","king","queen","ace"},{"2","3","4","5","6","7","8","9","10","king","queen","ace"},{"2","3","4","5","6","7","8","9","10","king","queen","ace"},{"2","3","4","5","6","7","8","9","10","king","queen","ace"}};
         String []Nsuits = {"clubs","diamonds","hearts","spades"};
         Random rand = new Random();
@@ -27,9 +33,14 @@ public class Blackjack extends JFrame{
         Nnumber = rand.nextInt(12);
         String path = "Java/minigame/Cards/"+number[suit][Nnumber]+"_of_"+Nsuits[suit]+".png";
         String opp = number[suit][Nnumber];
-        int Nopp;
         if (opp =="king"||opp == "queen"||opp =="ace"){
-            Nopp = 10;
+            if(opp=="ace"){
+                Nopp = 11;
+                aceCounter += 1;
+            }
+            else{
+                Nopp = 10;
+            }
         }
         else{
             Nopp = Integer.parseInt(opp);
@@ -42,8 +53,19 @@ public class Blackjack extends JFrame{
         }
         hiddenCard = "Java/minigame/Cards/"+number[suit][Nnumber]+"_of_"+Nsuits[suit]+".png";
         if(number[suit][Nnumber]=="king"||number[suit][Nnumber]=="queen"||number[suit][Nnumber]=="ace"){
+            if(number[suit][Nnumber]=="ace"){
+                if(Nopp+11>21){
+                    Nopp+=1;
+                }
+                else{
+                    aceCounter+=1;
+                    Nopp+=1;
+                }
+            }
+            else{
             Nopp +=10;
         }
+    }
         else{
             Nopp+= Integer.parseInt(number[suit][Nnumber]);
         }
@@ -71,7 +93,7 @@ public class Blackjack extends JFrame{
                 Uscore =10;
             }
             else{
-                Nopp = Integer.parseInt(number[suit][Nnumber]);
+                Uscore = Integer.parseInt(number[suit][Nnumber]);
             }
             number [suit][Nnumber] = "0";
             suit = rand.nextInt(4);
@@ -80,10 +102,10 @@ public class Blackjack extends JFrame{
                 Nnumber = rand.nextInt(12);
             }
             if(number[suit][Nnumber]=="king"||number[suit][Nnumber]=="queen"||number[suit][Nnumber]=="ace"){
-                Nopp +=10;
+                Uscore +=10;
             }
             else{
-                Nopp+= Integer.parseInt(number[suit][Nnumber]);
+                Uscore+= Integer.parseInt(number[suit][Nnumber]);
             }
             BufferedImage img4 = ImageIO.read(new File("Java/minigame/Cards/"+number[suit][Nnumber]+"_of_"+Nsuits[suit]+".png"));
             number [suit][Nnumber] = "0";
@@ -132,6 +154,60 @@ public class Blackjack extends JFrame{
                 JLabel HiddenCard =new JLabel(imgaeIcone);
                 HiddenCard.setBounds(230,75,100,200);
                 f.add(HiddenCard);
+                UserX = 330;
+                while(Nopp<16){
+                    BufferedImage img3 = ImageIO.read(new File("Java/minigame/Cards/"+number[suit][Nnumber]+"_of_"+Nsuits[suit]+".png"));
+                    Image dimg2 = img3.getScaledInstance(Label1.getWidth(), Label1.getHeight(), Image.SCALE_SMOOTH);
+                    ImageIcon imgaeIcone2 = new ImageIcon(dimg2);
+        
+                    JLabel pic = new JLabel(imgaeIcone2);
+                    pic.setBounds(UserX,75,100,200);
+                    f.add(pic);
+                    UserX+=100;
+                    if(number[suit][Nnumber]=="king"||number[suit][Nnumber]=="queen"||number[suit][Nnumber]=="ace"){
+                        if(number[suit][Nnumber]=="ace"){
+                            if(Nopp+11>21){
+                                Nopp+=1;
+                            }
+                            else{
+                                aceCounter+=1;
+                                Nopp+=11;
+                            }
+                        }
+                        else{
+                            if(Nopp+10>21 && aceCounter==0){
+                                Nopp+=1;
+                            }
+                            else{
+                                aceCounter-=1;
+                            }
+                        }
+                    }
+                    else{
+                        Nopp += Integer.parseInt(number[suit][Nnumber]);
+                        if (Nopp>21 && aceCounter>0){
+                            Nopp-=10;
+                            aceCounter-=1;
+                        }
+                    }
+                    number [suit][Nnumber] = "0";
+                    suit = rand.nextInt(4);
+                    Nnumber = rand.nextInt(12);
+                    while(number[suit][Nnumber] == "0"){
+                        Nnumber = rand.nextInt(12);
+                    }
+                }
+                if(Nopp<Uscore){
+                    winner = true;
+                }
+                else{
+                    if (Nopp>21){
+                        winner =true;
+                    }
+                    else{
+                        winner = false;
+                    }
+                }
                 hidden = false;
                 clicked = true;
                 }
@@ -154,6 +230,33 @@ public class Blackjack extends JFrame{
                 pic.setBounds(UserX,350,100,200);
                 f.add(pic);
                 UserX+=100;
+                if(number[suit][Nnumber]=="king"||number[suit][Nnumber]=="queen"||number[suit][Nnumber]=="ace"){
+                    Uscore +=10;
+                }
+                else{
+                    Uscore += Integer.parseInt(number[suit][Nnumber]);
+                }
+                number [suit][Nnumber] = "0";
+                suit = rand.nextInt(4);
+                Nnumber = rand.nextInt(12);
+                while(number[suit][Nnumber] == "0"){
+                    Nnumber = rand.nextInt(12);
+                }
+                if(Uscore>=21){
+                    f.remove(pic2);
+                    f.revalidate();
+                    f.repaint();
+                    BufferedImage img = ImageIO.read(new File(hiddenCard));
+                    Image dimg2 = img.getScaledInstance(Label1.getWidth(), Label1.getHeight(), Image.SCALE_SMOOTH);
+                    ImageIcon imgaeIcone2 = new ImageIcon(dimg2);
+                    JLabel HiddenCard =new JLabel(imgaeIcone2);
+                    HiddenCard.setBounds(230,75,100,200);
+                    f.add(HiddenCard);
+                    if(Uscore == 21){
+                        winner = true;
+                    }
+                    clicked = true;
+                }
             } catch (IOException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
@@ -175,6 +278,6 @@ public class Blackjack extends JFrame{
                 catch(Exception z){System.out.println(z);} 
         System.out.println("This has now worked");
         f.dispose();
-        return(true);
+        return(winner);
     }
 }
