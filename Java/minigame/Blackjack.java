@@ -162,7 +162,10 @@ public class Blackjack extends JFrame{
             f.add(pic2);
             f.add(pic3);
             f.add(pic4);
-
+            if (Uscore ==21){
+                clicked =true;
+                winner = true;
+            }
         } catch (IOException e) {
             System.out.print("not working");
             // TODO Auto-generated catch block
@@ -323,6 +326,15 @@ public class Blackjack extends JFrame{
         while(clicked == false){
             System.out.println(Uscore);
         }
+        JLabel outcome;
+        if (winner == false){
+             outcome = new JLabel("Better luck next time!");
+        }
+        else{
+            outcome = new JLabel("Congrats!");
+        }
+        outcome.setBounds(330,270,100,100);
+        f.add(outcome);
         try{
             TimeUnit.SECONDS.sleep(3);}
                 catch(Exception z){System.out.println(z);} 
