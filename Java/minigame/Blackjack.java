@@ -335,11 +335,14 @@ public class Blackjack extends JFrame{
         }
         outcome.setBounds(330,270,150,100);
         f.add(outcome);
+        f.remove(hit);
+        f.remove(stand);
+        f.repaint();
         try{
             TimeUnit.SECONDS.sleep(3);}
                 catch(Exception z){System.out.println(z);} 
         System.out.println("This has now worked");
-    
+        f.dispose();
         return(winner);
     }
 }
