@@ -207,11 +207,11 @@ public class Blackjack extends JFrame{
                             }
                         }
                         else{
-                            if(Nopp+10>21 && aceCounter==0){
-                                Nopp+=1;
+                            if(Nopp+10>21 && aceCounter>0){
+                                aceCounter-=1;
                             }
                             else{
-                                aceCounter-=1;
+                                Nopp+=10;
                             }
                         }
                     }
@@ -274,11 +274,11 @@ public class Blackjack extends JFrame{
                         }
                     }
                     else{
-                        if(Uscore+10>21 && UaceCounter==0){
-                            Uscore+=1;
+                        if(Uscore+10>21 && UaceCounter>0){
+                            UaceCounter-=1;
                         }
                         else{
-                            UaceCounter-=1;
+                            Uscore+=10;
                         }
                     }
                 }
@@ -333,13 +333,13 @@ public class Blackjack extends JFrame{
         else{
             outcome = new JLabel("Congrats!");
         }
-        outcome.setBounds(330,270,100,100);
+        outcome.setBounds(330,270,150,100);
         f.add(outcome);
         try{
             TimeUnit.SECONDS.sleep(3);}
                 catch(Exception z){System.out.println(z);} 
         System.out.println("This has now worked");
-        f.dispose();
+    
         return(winner);
     }
 }
