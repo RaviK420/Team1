@@ -1,7 +1,5 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.concurrent.TimeUnit;
@@ -23,9 +21,13 @@ public class Blackjack extends JFrame{
     static boolean winner;
     static int aceCounter;
     static int UaceCounter;
+    static int hitCounter;
+    //UaceCounter for the start do that
     public static boolean game(){
+        hitCounter =2;
         aceCounter = 0;
         UaceCounter = 0;
+        Uscore =0;
         String[][] number = {{"2","3","4","5","6","7","8","9","10","king","queen","ace"},{"2","3","4","5","6","7","8","9","10","king","queen","ace"},{"2","3","4","5","6","7","8","9","10","king","queen","ace"},{"2","3","4","5","6","7","8","9","10","king","queen","ace"}};
         String []Nsuits = {"clubs","diamonds","hearts","spades"};
         Random rand = new Random();
@@ -89,24 +91,49 @@ public class Blackjack extends JFrame{
             BufferedImage img = ImageIO.read(new File(path));
             BufferedImage img2 = ImageIO.read(new File("Java/minigame/Cards/back.jpg"));
             BufferedImage img3 = ImageIO.read(new File("Java/minigame/Cards/"+number[suit][Nnumber]+"_of_"+Nsuits[suit]+".png"));
+
             if(number[suit][Nnumber]=="king"||number[suit][Nnumber]=="queen"||number[suit][Nnumber]=="ace"){
-                Uscore =10;
+                if(number[suit][Nnumber]=="ace"){
+                    Uscore = 11;
+                    UaceCounter = 1;
+                }
+                else{
+                    Uscore = 10;
+                }
             }
             else{
                 Uscore = Integer.parseInt(number[suit][Nnumber]);
             }
+
             number [suit][Nnumber] = "0";
             suit = rand.nextInt(4);
             Nnumber = rand.nextInt(12);
             while(number[suit][Nnumber] == "0"){
                 Nnumber = rand.nextInt(12);
             }
+
             if(number[suit][Nnumber]=="king"||number[suit][Nnumber]=="queen"||number[suit][Nnumber]=="ace"){
-                Uscore +=10;
-            }
-            else{
-                Uscore+= Integer.parseInt(number[suit][Nnumber]);
-            }
+                    if(number[suit][Nnumber]=="ace"){
+                        if(Uscore+11>21){
+                            Uscore+=1;
+                        }
+                        else{
+                            UaceCounter+=1;
+                            Uscore+=11;
+                        }
+                    }
+                    else{
+                        Uscore+=10;
+                    }
+                }
+                else{
+                    Uscore += Integer.parseInt(number[suit][Nnumber]);
+                    if (Uscore>21 && UaceCounter>0){
+                        Uscore-=10;
+                        UaceCounter-=1;
+                    }
+                }
+
             BufferedImage img4 = ImageIO.read(new File("Java/minigame/Cards/"+number[suit][Nnumber]+"_of_"+Nsuits[suit]+".png"));
             number [suit][Nnumber] = "0";
             suit = rand.nextInt(4);
@@ -155,7 +182,9 @@ public class Blackjack extends JFrame{
                 HiddenCard.setBounds(230,75,100,200);
                 f.add(HiddenCard);
                 UserX = 330;
-                while(Nopp<16){
+                System.out.println(Nopp);
+                System.out.print("this is what is what");
+                while(Nopp<17){
                     BufferedImage img3 = ImageIO.read(new File("Java/minigame/Cards/"+number[suit][Nnumber]+"_of_"+Nsuits[suit]+".png"));
                     Image dimg2 = img3.getScaledInstance(Label1.getWidth(), Label1.getHeight(), Image.SCALE_SMOOTH);
                     ImageIcon imgaeIcone2 = new ImageIcon(dimg2);
@@ -229,12 +258,33 @@ public class Blackjack extends JFrame{
                 JLabel pic = new JLabel(imgaeIcone);
                 pic.setBounds(UserX,350,100,200);
                 f.add(pic);
+                hitCounter+=1;
                 UserX+=100;
                 if(number[suit][Nnumber]=="king"||number[suit][Nnumber]=="queen"||number[suit][Nnumber]=="ace"){
-                    Uscore +=10;
+                    if(number[suit][Nnumber]=="ace"){
+                        if(Uscore+11>21){
+                            Uscore+=1;
+                        }
+                        else{
+                            UaceCounter+=1;
+                            Uscore+=11;
+                        }
+                    }
+                    else{
+                        if(Uscore+10>21 && UaceCounter==0){
+                            Uscore+=1;
+                        }
+                        else{
+                            UaceCounter-=1;
+                        }
+                    }
                 }
                 else{
                     Uscore += Integer.parseInt(number[suit][Nnumber]);
+                    if (Uscore>21 && UaceCounter>0){
+                        Uscore-=10;
+                        UaceCounter-=1;
+                    }
                 }
                 number [suit][Nnumber] = "0";
                 suit = rand.nextInt(4);
@@ -242,7 +292,7 @@ public class Blackjack extends JFrame{
                 while(number[suit][Nnumber] == "0"){
                     Nnumber = rand.nextInt(12);
                 }
-                if(Uscore>=21){
+                if(Uscore>=21||hitCounter==5){
                     f.remove(pic2);
                     f.revalidate();
                     f.repaint();
@@ -252,7 +302,7 @@ public class Blackjack extends JFrame{
                     JLabel HiddenCard =new JLabel(imgaeIcone2);
                     HiddenCard.setBounds(230,75,100,200);
                     f.add(HiddenCard);
-                    if(Uscore == 21){
+                    if(Uscore == 21||hitCounter==5){
                         winner = true;
                     }
                     clicked = true;
@@ -271,7 +321,7 @@ public class Blackjack extends JFrame{
         //f.getContentPane().setBackground(Color.Darkgreen);
         f.setVisible(true);//making the frame visible 
         while(clicked == false){
-            System.out.println("_");
+            System.out.println(Uscore);
         }
         try{
             TimeUnit.SECONDS.sleep(3);}
