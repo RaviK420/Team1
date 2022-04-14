@@ -1,9 +1,6 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 import java.util.concurrent.TimeUnit;
-import java.io.*;
-import java.lang.Thread;
  
 
 public class HigherOrLower extends JFrame{
@@ -77,8 +74,10 @@ public class HigherOrLower extends JFrame{
             System.out.println("This is not working");
         } 
         try{
-        TimeUnit.SECONDS.sleep(5);}
-            catch(Exception z){System.out.println(z);}
+        TimeUnit.SECONDS.sleep(3);}
+            catch(Exception z)  {
+                System.out.println(z);
+            }
         f.dispose();    
         return(winner);
         }
